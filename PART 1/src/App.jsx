@@ -1,51 +1,62 @@
-const Header = ({ title }) => {
-  return <h1>{title}</h1>;
-};
-const Content = ({ all_parts_data }) => {
-  return (
-    <>
-      <Part info={all_parts_data[0]} />
-      <Part info={all_parts_data[1]} />
-      <Part info={all_parts_data[2]} />
-    </>
-  );
+const Header = ({ course: { name } }) => {
+    return <h1>{name}</h1>;
 };
 
-const Part = ({ info: [part, exercises] }) => {
-  return (
-    <>
-      <p>
-        {part} {exercises}
-      </p>
-    </>
-  );
+const Content = ({ course }) => {
+    return (
+        <>
+            <Part info={course.parts[0]} />
+            <Part info={course.parts[1]} />
+            <Part info={course.parts[2]} />
+        </>
+    );
 };
 
-const Total = ({ totalData }) => {
-  return <p>Number of exercises {totalData}</p>;
+const Part = ({ info }) => {
+    let { name, exercises } = info;
+    return (
+        <>
+            <p>
+                {name} {exercises}
+            </p>
+        </>
+    );
+};
+
+const Total = ({ course }) => {
+    let total = 0;
+    course.parts.forEach((item) => {
+        total += item.exercises;
+    });
+    return <p>Number of exercises {total}</p>;
 };
 
 const App = () => {
-  const course = "Half Stack application development";
-  const part1 = "Fundamentals of React";
-  const exercises1 = 10;
-  const part2 = "Using props to pass data";
-  const exercises2 = 7;
-  const part3 = "State of a component";
-  const exercises3 = 14;
+    const course = {
+        name: 'Half Stack application development',
+        parts: [
+            {
+                name: 'Fundamentals of React',
+                exercises: 10,
+            },
+            {
+                name: 'Using props to pass data',
+                exercises: 7,
+            },
+            {
+                name: 'State of a component',
+                exercises: 14,
+            },
+        ],
+    };
 
-  let all_parts = [];
-  all_parts.push([part1, exercises1]);
-  all_parts.push([part2, exercises2]);
-  all_parts.push([part3, exercises3]);
-  let total_exercises = exercises1 + exercises2 + exercises3;
-  return (
-    <>
-      <Header title={course} />
-      <Content all_parts_data={all_parts} />
-      <Total totalData={total_exercises} />
-    </>
-  );
+    return (
+        <>
+            <Header course={course} />
+            <Content course={course} />
+            <Total course={course} />
+        </>
+    );
 };
 
 export default App;
