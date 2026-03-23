@@ -1,4 +1,4 @@
-const ShowContacts = ({ persons, filter = "" }) => {
+const ShowContacts = ({ persons, filter = "", deleteEvent }) => {
   let filerByPersons =
     filter != ""
       ? persons.filter((person) => {
@@ -9,8 +9,9 @@ const ShowContacts = ({ persons, filter = "" }) => {
   return (
     <div>
       {filerByPersons.map((person) => (
-        <p key={person.name}>
+        <p key={person.id}>
           {person.name} {person.number}
+          <button onClick={() => deleteEvent(person.id)}>delete</button>
         </p>
       ))}
     </div>
