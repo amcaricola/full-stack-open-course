@@ -13,7 +13,7 @@ const ShowCountries = ({ countries, handleShowBtn }) => {
       {countries.map((country) => (
         <div>
           <p key={country.name.common}>
-            {country.name.common}{" "}
+            {country.name.common}
             <button onClick={() => handleShowBtn(country.name.common)}>
               Show
             </button>

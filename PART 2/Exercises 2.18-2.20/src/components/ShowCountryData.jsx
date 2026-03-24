@@ -4,7 +4,7 @@ const ShowCountryData = ({ countries }) => {
   const countrySelected = countries[0];
   const languages = Object.values(countrySelected.languages);
 
-  console.log(countrySelected);
+  // console.log(countrySelected);
 
   return (
     <div>

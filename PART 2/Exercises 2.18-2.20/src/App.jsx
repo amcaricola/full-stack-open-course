@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import ShowCountries from "./components/ShowCountries.jsx";
 import countriesService from "./services/countries";
 import ShowCountryData from "./components/ShowCountryData.jsx";
+import ShowCountryWeather from "./components/showCountryWeather.jsx";
 
 const App = () => {
   const [countries, setCountries] = useState([]);
@@ -46,7 +47,10 @@ const App = () => {
           handleShowBtn={handleSelected}
         />
       ) : (
-        <ShowCountryData countries={countriesToShow} />
+        <>
+          <ShowCountryData countries={countriesToShow} />
+          <ShowCountryWeather countries={countriesToShow} />
+        </>
       )}
     </>
   );
