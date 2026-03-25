@@ -1,26 +1,30 @@
 const ShowCountries = ({ countries, handleShowBtn }) => {
-  // console.log(countriesToShow);
+    // console.log(countriesToShow);
 
-  if (countries.length <= 0) {
-    return <p>no countries to show...</p>;
-  }
-  if (countries.length > 10) {
-    return <p>Too many matches, specify another filter</p>;
-  }
+    if (countries.length <= 0) {
+        return <p>no countries to show...</p>;
+    }
+    if (countries.length > 10) {
+        return <p>Too many matches, specify another filter</p>;
+    }
 
-  return (
-    <div>
-      {countries.map((country) => (
+    // console.log(countries);
+
+    return (
         <div>
-          <p key={country.name.common}>
-            {country.name.common}
-            <button onClick={() => handleShowBtn(country.name.common)}>
-              Show
-            </button>
-          </p>
+            {countries.map((country) => (
+                <div key={country.name.common}>
+                    <p>
+                        {country.name.common}
+                        <button
+                            onClick={() => handleShowBtn(country.name.common)}
+                        >
+                            Show
+                        </button>
+                    </p>
+                </div>
+            ))}
         </div>
-      ))}
-    </div>
-  );
+    );
 };
 export default ShowCountries;
