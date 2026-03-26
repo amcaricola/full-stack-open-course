@@ -1,13 +1,27 @@
 const express = require("express");
-let persons = require("./persons.json");
 const app = express();
+const morgan = require("morgan");
+let persons = require("./persons.json");
 
 // MATH RANDOM 3.5
 const generateId = () => {
   return Math.floor(Math.random() * 100000000);
 };
 
+morgan.token("post-content", (req) => {
+  if (req.method === "POST") {
+    return JSON.stringify(req.body);
+  } else {
+    return "";
+  }
+});
+
 app.use(express.json());
+app.use(
+  morgan(
+    ":method :url :status :res[content-length] - :response-time ms :post-content",
+  ),
+);
 
 app.get("/info", (request, response) => {
   const _res =
@@ -16,6 +30,7 @@ app.get("/info", (request, response) => {
     " people</p><p>" +
     new Date() +
     "</p>";
+
   response.send(_res);
 });
 
@@ -55,7 +70,6 @@ app.post("/api/persons", (request, response) => {
   };
 
   persons = persons.concat(newPerson);
-
   response.json(newPerson);
 });
 
