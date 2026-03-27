@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const morgan = require("morgan");
 let persons = require("./persons.json");
 
@@ -16,12 +17,23 @@ morgan.token("post-content", (req) => {
   }
 });
 
+const corsOptions = {
+  origin: "*",
+  optionsSuccessStatus: 200,
+};
+
+app.use(express.static("dist"));
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(
   morgan(
     ":method :url :status :res[content-length] - :response-time ms :post-content",
   ),
 );
+
+app.get("/", (request, response) => {
+  response.sendFile("dist/index.html");
+});
 
 app.get("/info", (request, response) => {
   const _res =
@@ -88,6 +100,7 @@ app.delete("/api/persons/:id", (request, response) => {
 const port = 3001;
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
+  console.log(`http://localhost:${port}/`);
   console.log(`http://localhost:${port}/info`);
   console.log(`http://localhost:${port}/api/persons`);
 });
