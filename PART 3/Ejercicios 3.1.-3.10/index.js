@@ -1,8 +1,9 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const cors = require("cors");
 const morgan = require("morgan");
-let persons = require("./persons.json");
+let persons = require("./models/person");
 
 // MATH RANDOM 3.5
 const generateId = () => {
@@ -36,68 +37,71 @@ app.get("/", (request, response) => {
 });
 
 app.get("/info", (request, response) => {
-  const _res =
-    "<p>Phonebook has info for " +
-    persons.length +
-    " people</p><p>" +
-    new Date() +
-    "</p>";
+  persons.find({}).then((result) => {
+    console.log(result.length);
+    const _res =
+      "<p>Phonebook has info for " +
+      result.length +
+      " people</p><p>" +
+      new Date() +
+      "</p>";
 
-  response.send(_res);
+    response.send(_res);
+  });
 });
 
-app.get("/api/persons", (request, response) => {
-  response.json(persons);
-});
+// app.get("/api/persons", (request, response) => {
+//   response.json(persons);
+// });
 
-app.get("/api/persons/:id", (request, response) => {
-  const id = Number(request.params.id);
-  const person = persons.find((person) => person.id === id);
-  if (person) {
-    response.json(person);
-  } else {
-    response.status(404).json({ error: "id not found" });
-  }
-});
+// app.get("/api/persons/:id", (request, response) => {
+//   const id = Number(request.params.id);
+//   const person = persons.find((person) => person.id === id);
+//   if (person) {
+//     response.json(person);
+//   } else {
+//     response.status(404).json({ error: "id not found" });
+//   }
+// });
 
-app.post("/api/persons", (request, response) => {
-  const bodyContent = request.body;
+// app.post("/api/persons", (request, response) => {
+//   const bodyContent = request.body;
 
-  if (!bodyContent.name || !bodyContent.number) {
-    return response.status(400).json({
-      error: "content missing",
-    });
-  }
+//   if (!bodyContent.name || !bodyContent.number) {
+//     return response.status(400).json({
+//       error: "content missing",
+//     });
+//   }
 
-  if (persons.find((person) => person.name === bodyContent.name)) {
-    return response.status(400).json({
-      error: "name must be unique",
-    });
-  }
+//   if (persons.find((person) => person.name === bodyContent.name)) {
+//     return response.status(400).json({
+//       error: "name must be unique",
+//     });
+//   }
 
-  const newPerson = {
-    id: generateId(),
-    name: bodyContent.name,
-    number: bodyContent.number,
-  };
+//   const newPerson = {
+//     id: generateId(),
+//     name: bodyContent.name,
+//     number: bodyContent.number,
+//   };
 
-  persons = persons.concat(newPerson);
-  response.json(newPerson);
-});
+//   persons = persons.concat(newPerson);
+//   response.json(newPerson);
+// });
 
-app.delete("/api/persons/:id", (request, response) => {
-  const id = Number(request.params.id);
-  const person = persons.find((person) => person.id === id);
-  if (!person) {
-    return response.status(404).json({
-      error: "id not found",
-    });
-  }
-  persons = persons.filter((person) => person.id !== id);
-  response.status(204).end();
-});
+// app.delete("/api/persons/:id", (request, response) => {
+//   const id = Number(request.params.id);
+//   const person = persons.find((person) => person.id === id);
+//   if (!person) {
+//     return response.status(404).json({
+//       error: "id not found",
+//     });
+//   }
+//   persons = persons.filter((person) => person.id !== id);
+//   response.status(204).end();
+// });
 
-const port = 3001;
+const port = process.env.PORT;
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
   console.log(`http://localhost:${port}/`);
