@@ -1,12 +1,8 @@
 const mongoose = require('mongoose');
 
-const PASSWORD = process.env.PASSWORD;
-
-const url = `mongodb+srv://amcaricola_db_user:${PASSWORD}@cluster0.rdifoke.mongodb.net/phonebook?appName=Cluster0`;
+const url = process.env.MONGODB_URI;
 
 mongoose.set('strictQuery', false);
-
-console.log('connecting to', url);
 
 mongoose
     .connect(url)
@@ -18,8 +14,22 @@ mongoose
     });
 
 const personSchema = new mongoose.Schema({
-    name: String,
-    number: String,
+    name: {
+        type: String,
+        minlength: 3,
+        required: true,
+    },
+    number: {
+        type: String,
+        minlength: 8,
+        validate: {
+            validator: function (v) {
+                return /^\d{2,3}-\d+$/.test(v);
+            },
+            message: (props) => `${props.value} is not a valid phone number!`,
+        },
+        required: true,
+    },
 });
 
 personSchema.set('toJSON', {
