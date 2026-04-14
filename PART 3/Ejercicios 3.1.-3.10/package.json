@@ -4,6 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
+        "lint": "eslint .",
         "dev": "nodemon index.js",
         "start": "node index.js",
         "mongo": "node mongo.js",
@@ -15,7 +16,10 @@
     "type": "commonjs",
     "private": true,
     "devDependencies": {
+        "@stylistic/eslint-plugin": "^5.10.0",
         "@types/bun": "latest",
+        "eslint": "^10.2.0",
+        "globals": "^17.5.0",
         "nodemon": "^3.1.14"
     },
     "peerDependencies": {
